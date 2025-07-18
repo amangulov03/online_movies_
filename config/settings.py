@@ -147,7 +147,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 # ACTIVATE_USERS_EMAIL = True
 
-# AUTH_USER_MODEL = 'account.CustomUser'
+AUTH_USER_MODEL = 'account.CustomUser'
 
 
 REST_FRAMEWORK = {
