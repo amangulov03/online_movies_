@@ -9,11 +9,18 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
 class Movie(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     year = models.PositiveIntegerField()
     genres = models.ManyToManyField(Genre)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='movies')
     poster = models.ImageField(upload_to='posters/', blank=True)
     video = models.FileField(upload_to='video/', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

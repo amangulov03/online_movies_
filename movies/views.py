@@ -5,13 +5,17 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 from .models import Movie
-from .serializers import MovieSerializer
+from .serializers import MovieDetailSerializer, MoviesListSerializer
 from .permissions import IsAdminOrCustomer
 
 class MovieModelViewSet(ModelViewSet):
     queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
     permission_classes = [IsAdminOrCustomer]
     filter_backends = (DjangoFilterBackend, SearchFilter)
     filterset_fields = ('genres',)
     search_fields = ('title', )
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return MoviesListSerializer
+        return MovieDetailSerializer
