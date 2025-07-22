@@ -17,6 +17,6 @@ class MovieSerializer(serializers.ModelSerializer):
     def get_fields(self):
         fields = super().get_fields()
         request = self.context.get('request')
-        if not request:
+        if not request.user.is_authenticated:
             fields.pop('video')
         return fields
