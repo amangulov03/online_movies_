@@ -8,9 +8,9 @@ class RatingSerializer(serializers.ModelSerializer):
         exclude = ('user', )
 
     def validate_score(self, value):
-        if 1 <= value <= 5:
+        if 1 <= value <= 10:
             return value
-        raise serializers.ValidationError('Оценка должна быть от 1 до 5.')
+        raise serializers.ValidationError('Оценка должна быть от 1 до 10.')
 
     def validate(self, attrs):
         super().validate(attrs)
