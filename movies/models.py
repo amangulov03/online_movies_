@@ -24,6 +24,17 @@ class Movie(models.Model):
     poster = models.ImageField(upload_to='posters/', blank=True)
     video = models.FileField(upload_to='video/', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    avarage_rating = models.FloatField(default=0.0, blank=True)
+
+    def update_avarage_rating(self):
+        ratings = self.ratings.all()
+        if ratings.exists:
+            total_score = sum(rating.score for rating in ratings)
+            count = len(ratings)
+            self.avarage_rating = round(total_score / count, 1)
+        else:
+            self.avarage_rating = 0.0
+        self.save()
 
     def __str__(self):
         return self.title
