@@ -17,13 +17,13 @@ class CommentModelViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 class FavoriteModelViewSet(ModelViewSet):
-    queryset = Favorite.objects.all()
+    queryset = Favorite.objects.order_by('id')
     serializer_class = FavoriteSerializer
-    permission_classes = [ IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-    
+
 @api_view(['POST'])
 def toogle_like(request, id):
     user = request.user
@@ -34,5 +34,4 @@ def toogle_like(request, id):
         Like.objects.filter(user=user, movies=movies).delete()
     else:
         Like.objects.create(user=user, movies=movies)
-        return Response(status=201)
-    
+    return Response(status=201)
