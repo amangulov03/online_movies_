@@ -15,7 +15,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class MoviesListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = 'id', 'poster', 'title'
+        fields = 'id', 'poster', 'title', 'avarage_rating'
 
 class MovieDetailSerializer(serializers.ModelSerializer):
     genres = GenreSerializer(many=True)

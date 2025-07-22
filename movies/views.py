@@ -12,7 +12,7 @@ class MovieModelViewSet(ModelViewSet):
     queryset = Movie.objects.all()
     permission_classes = [IsAdminOrCustomer]
     filter_backends = (DjangoFilterBackend, SearchFilter)
-    filterset_fields = ('genres',)
+    filterset_fields = ('genres', 'category', 'avarage_rating')
     search_fields = ('title', )
 
     def get_serializer_class(self):
