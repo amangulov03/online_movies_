@@ -28,7 +28,7 @@ class Movie(models.Model):
 
     def update_avarage_rating(self):
         ratings = self.ratings.all()
-        if ratings.exists:
+        if ratings.exists():
             total_score = sum(rating.score for rating in ratings)
             count = len(ratings)
             self.avarage_rating = round(total_score / count, 1)

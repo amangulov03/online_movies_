@@ -5,8 +5,8 @@ from .models import Rating
 class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
-        exclude = ('user', )
-
+        fields = "__all__"
+        
     def validate_score(self, value):
         if 1 <= value <= 10:
             return value

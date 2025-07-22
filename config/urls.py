@@ -19,12 +19,24 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="docs for front",
+        description="movies_api",
+        default_version='v1'
+    )
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
     path('movies/', include('movies.urls')),
     path('ratings/', include('ratings.urls')),
     path('reviews/', include('reviews.urls')),
+    path('docs/', schema_view.with_ui('swagger'))
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
