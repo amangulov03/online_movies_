@@ -25,6 +25,15 @@ class Movie(models.Model):
     video = models.FileField(upload_to='video/', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     avarage_rating = models.FloatField(default=0.0, blank=True)
+    is_series = models.BooleanField(default=False, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.category == 'Сериалы':
+            self.is_series = True
+            self.video = None
+        else:
+            self.is_series = False
+        super().save(*args, **kwargs)
 
     def update_avarage_rating(self):
         ratings = self.ratings.all()
@@ -38,3 +47,16 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+
+class Episode(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='episodes')
+    title = models.CharField(max_length=255)
+    episode_number = models.PositiveIntegerField()
+    video = models.FileField(upload_to='series/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = 'episode_number',
+
+    def __str__(self):
+        return f"{self.movie.title} - Серия {self.episode_number}"

@@ -19,3 +19,6 @@ class MovieModelViewSet(ModelViewSet):
         if self.action == 'list':
             return MoviesListSerializer
         return MovieDetailSerializer
+
+    def get_queryset(self):
+        return Movie.objects.order_by('id')

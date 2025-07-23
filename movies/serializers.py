@@ -1,7 +1,12 @@
 from rest_framework import serializers
 
-from .models import Movie, Genre, Category
+from .models import Movie, Genre, Category, Episode
 from reviews.serializers import CommentSerializer
+
+class EpisodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Episode
+        fields = 'id', 'title', 'episode_number', 'video', 'created_at'
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,15 +31,20 @@ class MoviesListSerializer(serializers.ModelSerializer):
 class MovieDetailSerializer(serializers.ModelSerializer):
     genres = GenreSerializer(many=True)
     category = CategorySerializer()
+    episodes = EpisodeSerializer(many=True)
 
     class Meta:
         model = Movie
-        fields = 'id', 'title', 'description', 'year', 'video', 'genres', 'category', 
+        fields = 'id', 'title', 'description', 'year', 'video', 'episodes', 'genres', 'category',
 
     def to_representation(self, instance):
         repr = super().to_representation(instance)
         repr['likes'] = instance.likes.all().count()
         repr['comments'] = CommentSerializer(instance.comments.all(), many=True).data
+        if not instance.is_series:
+            repr.pop('episodes')
+        else:
+            repr.pop('video')
         return repr
 
     def get_fields(self):
@@ -42,4 +52,6 @@ class MovieDetailSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if not request.user.is_authenticated:
             fields.pop('video')
+            if 'episodes' in fields:
+                fields['episodes'].child.fields.pop('video')
         return fields
