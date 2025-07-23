@@ -13,4 +13,4 @@ class Rating(models.Model):
         unique_together = 'user', 'movie'
 
     def __str__(self):
-        return f"{self.user.username} - {self.movie.title}: {self.score}"
+        return f"{self.user} - {self.movie.title}: {self.score}"
